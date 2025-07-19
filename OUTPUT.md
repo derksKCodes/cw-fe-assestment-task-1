@@ -2,6 +2,21 @@
 
 ---
 
+
+### Project Structure
+
+1. Component separation and reusability  
+   - Issue: Components were not separated into clear, reusable files.  
+     Initially, search, header, hero section, and tag list logic were mixed or kept inline, making the project harder to navigate and maintain.  
+   - Fix:  
+     Created dedicated component files:
+     - `BoxArea97.tsx` for the hero section.
+     - `BoxArea108.tsx` for the search bar.
+     - `Header.tsx` for the top navigation.
+     - `TagList.tsx` for the tag display section.
+
+---
+
 ### Header
 
 1. Padding inconsistency
@@ -133,8 +148,6 @@
      for consistent shape, padding, and muted styling.
 
 ---
-
-## Changes Made
 
 ### useIsMobile Hook
 
