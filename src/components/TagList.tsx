@@ -3,17 +3,30 @@ import { Badge } from "@/components/ui/badge";
 type TagListProps = {
   title: string;
   tags: string[];
-};
+  onTagClick?: (tag: string) => void;
+}
 
-export default function TagList({ title, tags }: TagListProps) {
+
+export default function TagList({ title, tags, onTagClick }: TagListProps) {
+const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>, tag: string) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onTagClick?.(tag);
+    }
+  };
   return (
-    <section className="mt-10 px-1 max-w-7xl mx-auto">
-      <h2 className="text-gray-300 text-lg md:text-3xl font-bold mb-6">{title}</h2>
-      <div className="flex flex-wrap gap-4">
+    <section className="mt-8 px-6 max-w-5xl mx-auto" aria-label={title}>
+      <h2 className="text-white text-2xl font-semibold mb-4">{title}</h2>
+      <div className="flex flex-wrap gap-3">
         {tags.map((tag) => (
           <Badge
             key={tag}
-            className="bg-gray-800 hover:bg-gray-750 text-gray-450 rounded-xl px-4 py-1.5 text-sm md:text-xl"
+            className="bg-[#293038] md:text-lg text-gray-400 hover:bg-gray-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 py-1.5 px-4"
+            role="button"
+            tabIndex={0}
+            aria-pressed="false"
+            onClick={() => onTagClick?.(tag)}
+            onKeyDown={(e) => handleKeyDown(e, tag)}
           >
             {tag}
           </Badge>

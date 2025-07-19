@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 
-type SearchInputProps = {
+interface BoxArea108Props {
   initialValue: string;
   onSearch: (search: string) => void;
-};
+}
 
-export default function BoxArea108({ initialValue, onSearch }: SearchInputProps) {
+export default function BoxArea108({ initialValue, onSearch }: BoxArea108Props) {
   const [innerValue, setInnerValue] = useState(initialValue);
 
   useEffect(() => {
@@ -20,23 +20,20 @@ export default function BoxArea108({ initialValue, onSearch }: SearchInputProps)
   }, [initialValue]);
 
   return (
-    <div className="flex items-center bg-neutral-950 border border-gray-700 px-3 py-3 rounded-2xl w-full max-w-2xl  shadow-md "  role="search">
-      
-      <Search  className="text-gray-600 ml-3 w-7 h-7" aria-hidden="true" />
+    <div className="flex items-center w-full max-w-md mt-6 px-4 py-2 bg-[#1C2126] rounded-lg shadow-lg">
+      <Search className="text-gray-400 w-5 h-5" aria-hidden="true" />
       <Input
-        value={innerValue}
-        onChange={(e) => setInnerValue(e.target.value)}
         type="text"
+        value={innerValue}
+        onChange={(e) => onSearch(e.target.value)}
         placeholder="Type to search..."
-        aria-label="Search input "
-        className="flex-1 border-none md:text-2xl text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base pl-4"
+        className="flex-1 bg-transparent border-none text-white placeholder:text-gray-400 focus:outline-none focus:ring-0 focus-visible:ring-0"
+        aria-label="Search input"
       />
-      <Button
-        type="button"
-        onClick={() => onSearch(innerValue)}
-        className="bg-blue-800  md:text-2xl hover:bg-blue-500 text-gray-300 ml-3 px-7 py-9 text-base rounded-xl"
-        aria-label="Trigger search">Search
+      <Button className="ml-4 bg-blue-500 hover:bg-blue-600 text-white cursor-pointer">
+        Search
       </Button>
     </div>
   );
 }
+

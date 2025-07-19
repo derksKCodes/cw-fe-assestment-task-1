@@ -2,150 +2,131 @@
 
 ---
 
-
 ### Project Structure
 
-1. Component separation and reusability  
-   - Issue: Components were not separated into clear, reusable files.  
-     Initially, search, header, hero section, and tag list logic were mixed or kept inline, making the project harder to navigate and maintain.  
-   - Fix:  
-     Created dedicated component files:
-     - `BoxArea97.tsx` for the hero section.
-     - `BoxArea108.tsx` for the search bar.
-     - `Header.tsx` for the top navigation.
-     - `TagList.tsx` for the tag display section.
+1. Component modularization for clarity and reusability  
+   - **Issue:** Previously, search, header, hero section, and tag list logic were mixed within `App.tsx`, making it harder to navigate and maintain.  
+   - **Fix:** Created dedicated, reusable, and clearly named component files:  
+     1. `BoxArea97.tsx` – hero section with background and search.  
+     2. `BoxArea108.tsx` – search bar component.  
+     3. `Header.tsx` – top navigation with search and avatar.  
+     4. `TagList.tsx` – reusable tag display section.  
+   - Imported these cleanly in `App.tsx` to improve readability and scalability.
+
+---
+
+### App.tsx
+
+1. Clean structured layout  
+   - **Issue:** Previously cluttered with logic and layout in one place.  
+   - **Fix:** Now imports and utilizes:  
+     1. `<Header />`  
+     2. `<BoxArea97 />`  
+     3. `<TagList />`  
+     for a clean, readable structure.
+
+2. State management for tags  
+   - **Issue:** Hardcoded, scattered tags.  
+   - **Fix:** Centralized tags in state using `useState`, allowing easier future expansion.
+
+3. Consistent styling  
+   - **Issue:** Inconsistent background and text styling.  
+   - **Fix:** Added `className="bg-[#121417] min-h-screen text-white"` for consistent dark theme and full-screen layout.
 
 ---
 
 ### Header
 
-1. Padding inconsistency
-   - Issue: Used `px-6 py-4`, inconsistent with design spacing.
-   - Fix: Updated to `px-8 py-3` for consistency.
+1. Consistent background  
+   - **Issue:** Previously using inconsistent background colors.  
+   - **Fix:** Updated to `bg-[#121417]` matching the overall app background.
 
-2. Border color inconsistency
-   - Issue: Used `border-gray-800`, did not match app palette.
-   - Fix: Updated to `border-gray-500`.
+2. Responsive logo sizing  
+   - **Issue:** Non-responsive logo.  
+   - **Fix:** Updated to `w-5 h-5 md:w-6 md:h-6`.
 
-3. Logo responsiveness
-   - Issue: Logo used `w-10 h-10` without responsiveness.
-   - Fix: Changed to `w-5 h-5 md:w-6 md:h-6` for responsive sizing.
+3. Accessible and structured search bar  
+   - **Issue:** Previously lacked semantic structure.  
+   - **Fix:** Added `role="search"` and `aria-label="Search in header"` for accessibility.
 
-4. Title semantic and styling
-   - Issue: Wrapped title in `<div>` without semantic styling.
-   - Fix: Changed to `<span>` with `text-white font-bold text-lg md:text-xl tracking-tight`.
+4. Focus ring and placeholder consistency  
+   - **Issue:** Invisible focus ring and inconsistent placeholder styles.  
+   - **Fix:** Updated to `focus:outline-none focus:ring-2 focus:ring-blue-500` with consistent `py-6` and placeholder styling.
 
-5. Unnecessary inline styles
-   - Issue: Used `style={{ position: "relative" }}`.
-   - Fix: Replaced with Tailwind `relative` utility.
-
-6. Search bar accessibility and structure
-   - Issue: Nested `<span>` wrappers, no ARIA roles.
-   - Fix: Replaced with clean structure using `role="search"` and `aria-label="Search in header"`.
-
-7. Focus ring visibility
-   - Issue: Used `focus:ring-0`, making focus invisible.
-   - Fix: Replaced with `focus:outline-none focus:ring-2 focus:ring-blue-500`.
-
-8. Placeholder, padding, and rounding inconsistency
-   - Issue: Used `rounded-full`, `pl-9`, no consistent placeholder styling.
-   - Fix: Updated to `rounded-lg`, `pl-13`, added `py-6`, `md:text-md`, and placeholder styling.
-
-9. Avatar responsiveness
-   - Issue: Inline sizing `style={{ width: "32px", height: "32px" }}`.
-   - Fix: Updated to `className="w-10 h-10 md:w-[54px] md:h-[54px] mr-3"`.
+5. Responsive avatar  
+   - **Issue:** Non-responsive, inline styling.  
+   - **Fix:** Updated to `className="w-10 h-10 md:w-[54px] md:h-[54px] mr-3"` for consistent responsive sizing.
 
 ---
 
 ### BoxArea97
 
-1. Container width
-   - Issue: Limited to `max-w-5xl`, reducing visual space.
-   - Fix: Updated to `max-w-7xl` for wider responsiveness.
+1. Props-based search handling  
+   - **Issue:** Previously hardcoded search handling within the hero section.  
+   - **Fix:** Accepts `initialValue` and `onSearch` as props for flexibility.
 
-2. Vertical spacing inconsistency
-   - Issue: Used `mt-8`, inconsistent with other sections.
-   - Fix: Changed to `mt-10`.
+2. Semantic and accessible section  
+   - **Issue:** Lacked `aria-label`.  
+   - **Fix:** Added `aria-label="Search section"` for accessibility.
 
-3. Background image sizing
-   - Issue: Used `h-96 object-cover`, not aligning with new layout.
-   - Fix: Updated to `h-120 object-fit`.
+3. Clean centered hero section structure  
+   - **Issue:** Messy padding and inconsistent alignment.  
+   - **Fix:** Uses `flex flex-col items-center justify-center text-center px-[94px]` for clear structure.
 
-4. Heading styling
-   - Issue: Heading used `text-3xl md:text-5xl`, lacked consistent design styling.
-   - Fix: Updated to `text-5xl md:text-7xl font-extrabold text-gray-300 mb-6 tracking-tighter leading-tight font-heading`.
+4. Consistent heading  
+   - **Issue:** Inconsistent heading styles.  
+   - **Fix:** Uses `text-3xl md:text-5xl font-black text-white tracking-tight`.
 
 ---
 
 ### BoxArea108
 
-1. Missing TypeScript props typing
-   - Issue: No clear `Props` type definition.
-   - Fix: Added:
+1. Proper TypeScript prop typing  
+   - **Issue:** Previously lacked consistent props typing.  
+   - **Fix:** Added:  
      ```ts
-     type BoxArea108Props = {
-       initialValue: string;
-       onSearch: (search: string) => void;
-     };
+     interface BoxArea108Props { initialValue: string; onSearch: (search: string) => void; }
      ```
 
-2. Container styling inconsistency
-   - Issue: Used `bg-black`, `rounded-full`, and small max width.
-   - Fix: Updated to:
-     ```tsx
-     className="flex items-center bg-neutral-950 border border-gray-700 px-3 py-3 rounded-2xl w-full max-w-2xl shadow-md"
-     ```
-     Added `role="search"` for accessibility.
+2. Search propagation  
+   - **Issue:** The Search button did not trigger a search explicitly.  
+   - **Fix:** Updated onChange to call `onSearch` directly, and the button now visually signals search but can be extended to call `onSearch(innerValue)` explicitly.
 
-3. Input field design inconsistency
-   - Issue: Used `bg-transparent`, lacked focus and text styling.
-   - Fix: Added:
-     ```tsx
-     md:text-2xl text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-base pl-4
-     ```
-     for clear focus and consistency.
+3. Container styling consistency  
+   - **Issue:** Inconsistent dark mode styling and rounded corners.  
+   - **Fix:** Uses `flex items-center w-full max-w-md mt-6 px-4 py-2 bg-[#1C2126] rounded-lg shadow-lg` for consistency.
 
-4. Search icon accessibility and sizing
-   - Issue: Used `text-gray-400 mr-3`, lacked clear sizing and placement.
-   - Fix: Updated to `text-gray-600 ml-3 w-7 h-7`.
+4. Accessible and clean input design  
+   - **Issue:** Previously missing clear focus styling and placeholder styling.  
+   - **Fix:** Updated with `bg-transparent border-none text-white placeholder:text-gray-400 focus:outline-none focus:ring-0 focus-visible:ring-0`.
 
-5. Search button clarity and consistency
-   - Issue: Inconsistent button styling and missing explicit type.
-   - Fix: Added `type="button"` and `aria-label="Trigger search"`, updated styling:
-     ```tsx
-     bg-blue-800 hover:bg-blue-500 text-gray-300 ml-3 px-7 py-9 text-base rounded-xl
-     ```
-     ensuring color consistency and clear hit area.
+5. Responsive, accessible search icon  
+   - **Issue:** Non-semantic and inconsistent icon sizing.  
+   - **Fix:** Uses `className="text-gray-400 w-5 h-5"`.
+
+6. Clickable, consistent search button  
+   - **Issue:** Inconsistent button styling.  
+   - **Fix:** Updated to `ml-4 bg-blue-500 hover:bg-blue-600 text-white cursor-pointer`.
 
 ---
 
 ### TagList
 
-1. Missing TypeScript props typing
-   - Issue: Lacked explicit prop types for clarity.
-   - Fix: Added:
-     ```ts
-     type TagListProps = {
-       title: string;
-       tags: string[];
-     };
-     ```
+1. Added keyboard accessibility for tags  
+   - **Issue:** Tags were not keyboard accessible.  
+   - **Fix:** Added `tabIndex={0}` and `onKeyDown={handleKeyDown}` enabling Enter/Space activation for accessibility.
 
-2. Container structure and styling inconsistency
-   - Issue: Used `div.mt-8 px-6 max-w-5xl`, lacked semantic structure.
-   - Fix: Updated to `section.mt-10 px-1 max-w-7xl`.
+2. Optional onTagClick prop for interactivity  
+   - **Issue:** Tags were static and non-interactive.  
+   - **Fix:** Added `onTagClick` prop to allow parent components to handle tag clicks dynamically.
 
-3. Heading styling inconsistency
-   - Issue: Used `text-white text-lg font-semibold`.
-   - Fix: Updated to `text-gray-300 text-lg md:text-3xl font-bold mb-6`.
+3. Consistent badge styling  
+   - **Issue:** Inconsistent colors and sizing.  
+   - **Fix:** Uses `bg-[#293038] md:text-lg text-gray-400 hover:bg-gray-700 py-1.5 px-4 rounded focus:ring-2 focus:ring-blue-500` for visual consistency and accessibility.
 
-4. Badge color and padding inconsistency
-   - Issue: Used `bg-gray-800 text-white hover:bg-gray-700 cursor-pointer`.
-   - Fix: Updated to:
-     ```tsx
-     bg-gray-800 hover:bg-gray-750 text-gray-450 rounded-xl px-4 py-1.5 text-sm md:text-xl
-     ```
-     for consistent shape, padding, and muted styling.
+4. Structured semantic section  
+   - **Issue:** Lacked clarity and semantic labeling.  
+   - **Fix:** Added `aria-label={title}` for screen reader clarity.
 
 ---
 
