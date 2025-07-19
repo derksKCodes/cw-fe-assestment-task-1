@@ -131,3 +131,51 @@
      bg-gray-800 hover:bg-gray-750 text-gray-450 rounded-xl px-4 py-1.5 text-sm md:text-xl
      ```
      for consistent shape, padding, and muted styling.
+
+---
+
+## Changes Made
+
+### useIsMobile Hook
+
+1. SSR safety and hydration consistency  
+   - Issue: Using `window` directly can throw errors during SSR, and initializing `isMobile` with `undefined` can cause hydration mismatches in Next.js and React 19.  
+   - Fix: Added a safe initialization:  
+     ```ts
+     const [isMobile, setIsMobile] = React.useState<boolean>(() => {
+       if (typeof window !== "undefined") {
+         return window.innerWidth < MOBILE_BREAKPOINT;
+       }
+       return false;
+     });
+     ```
+2. Using `mql.matches` instead of `window.innerWidth`  
+   - Issue: Mixing `window.innerWidth` and `matchMedia` adds inconsistency and redundancy.  
+   - Fix: Replaced with:  
+     ```ts
+     setIsMobile(mql.matches);
+     ```
+
+3. Safari < 14 compatibility  
+   - Issue: Older Safari versions do not support `mql.addEventListener`.  
+   - Fix: Added fallback using:  
+     ```ts
+     if (mql.addEventListener) {
+       mql.addEventListener("change", onChange);
+     } else {
+       mql.addListener(onChange);
+     }
+     ```
+
+4. Added cleanup with browser compatibility  
+   - Issue: Cleanup only using `removeEventListener` may fail on older browsers.  
+   - Fix: Matching fallback in cleanup:  
+     ```ts
+     if (mql.removeEventListener) {
+       mql.removeEventListener("change", onChange);
+     } else {
+       mql.removeListener(onChange);
+     }
+     ```
+
+---
